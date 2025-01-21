@@ -1,6 +1,6 @@
 package com.example.CanvasTLV_Hotel.modules;
 
-import com.example.CanvasTLV_Hotel.modules.enums.Type;
+import com.example.CanvasTLV_Hotel.modules.enums.RoomType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class Room {
     private long id;
     @Column(unique = true)
     private String roomNumber;
-    private Type type;
+    private RoomType type;
     private double pricePerNight;
     private boolean isAvailable;
     private String description;
@@ -24,4 +24,5 @@ public class Room {
     private List<String> features;
     @OneToMany
     private Reservation reservation;
+
 }

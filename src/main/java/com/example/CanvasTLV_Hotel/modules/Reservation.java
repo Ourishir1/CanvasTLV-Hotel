@@ -1,6 +1,6 @@
 package com.example.CanvasTLV_Hotel.modules;
 
-import com.example.CanvasTLV_Hotel.modules.enums.Status;
+import com.example.CanvasTLV_Hotel.modules.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,16 @@ public class Reservation {
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;
-    private Status status;
+    private OrderStatus status;
     @ManyToOne
     private User user;
     @ManyToOne
     private Room room;
+
+    public Reservation(LocalDate startDate, LocalDate endDate, double totalPrice, User user) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.totalPrice = totalPrice;
+        this.user = user;
+    }
 }
