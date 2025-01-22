@@ -18,11 +18,20 @@ public class Room {
     private String roomNumber;
     private RoomType type;
     private double pricePerNight;
-    private boolean isAvailable;
+    private boolean isAvailable=true;
     private String description;
     private int capacity;
     private List<String> features;
     @OneToMany
     private Reservation reservation;
 
+    public Room(String roomNumber, RoomType type, double pricePerNight, boolean isAvailable, String description, int capacity, List<String> features) {
+        this.roomNumber = roomNumber;
+        this.type = type;
+        this.pricePerNight = pricePerNight;
+        this.isAvailable = isAvailable;
+        this.description = description;
+        this.capacity = capacity;
+        this.features = features;
+    }
 }

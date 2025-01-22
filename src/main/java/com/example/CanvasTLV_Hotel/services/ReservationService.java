@@ -8,7 +8,7 @@ import com.example.CanvasTLV_Hotel.repositories.PaymentRepo;
 import com.example.CanvasTLV_Hotel.repositories.ReservationRepo;
 import com.example.CanvasTLV_Hotel.repositories.RoomRepo;
 import com.example.CanvasTLV_Hotel.repositories.UserRepo;
-import com.example.CanvasTLV_Hotel.services.Exceptions.NoAvailbleRoomsExeption;
+import com.example.CanvasTLV_Hotel.services.Exceptions.NoAvailableRoomsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,18 +17,17 @@ import java.util.List;
 @Service
 public class ReservationService {
     protected ReservationRepo reservationRepo;
-    protected UserRepo userRepo;
     protected PaymentRepo paymentRepo;
     protected RoomRepo roomRepo;
 
-    public ReservationService(ReservationRepo xreservationRepo, UserRepo userRepo, PaymentRepo paymentRepo, RoomRepo roomRepo) {
-        this.reservationRepo = xreservationRepo;
-        this.userRepo = userRepo;
+    public ReservationService(ReservationRepo reservationRepo, UserRepo userRepo, PaymentRepo paymentRepo, RoomRepo roomRepo) {
+        this.reservationRepo = reservationRepo;
         this.paymentRepo = paymentRepo;
         this.roomRepo = roomRepo;
     }
 
-    public Room assignAvailableRoom(RoomType roomType, LocalDate requestedStartDate, LocalDate requestedEndDate) throws NoAvailbleRoomsExeption {
+    public Room assignAvailableRoom(RoomType roomType, LocalDate requestedStartDate, LocalDate requestedEndDate) throws NoAvailableRoomsException {
+
         // Fetch all rooms of the requested type
         List<Room> rooms = roomRepo.findRoomByRoomType(roomType);
         // Iterate through the rooms to find an available one
@@ -44,22 +43,31 @@ public class ReservationService {
         }
 
         // No available room found, throw an exception or return null
-        throw new NoAvailbleRoomsExeption("No available rooms of type " + roomType + " for the requested dates.");
+        throw new NoAvailableRoomsException("No available rooms of type " + roomType + " for the requested dates.");
     }
 
 
 
-    public void createReservation(Reservation reservation, RoomType roomType) throws NoAvailbleRoomsExeption {
+    public void createReservation(Reservation reservation, RoomType roomType) throws NoAvailableRoomsException {
+        if (reservation.getStartDate().isAfter(reservation.getEndDate()) || reservation.getStartDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Invalid reservation dates.");
+        }
         Room openRoom = assignAvailableRoom(roomType, reservation.getStartDate(), reservation.getEndDate());
         reservation.setRoom(openRoom);
         reservationRepo.save(reservation);
 
 
     }
+
+    public List<Reservation> getAllReservations(){
+        return reservationRepo.findAll();
+    }
     public List<Reservation> getReservationsByUser(User user){
         return reservationRepo.findReservationsByUser(user);
     }
+    public void updateReservationOrderStatus(Reservation reservation){
+        reservationRepo.save(reservation);
+    }
 
 }
-//    updateReservationStatus()
-//    cancelReservation()
+

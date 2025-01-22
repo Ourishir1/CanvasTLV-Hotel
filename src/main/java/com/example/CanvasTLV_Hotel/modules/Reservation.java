@@ -17,7 +17,7 @@ public class Reservation {
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;
-    private OrderStatus status;
+    private OrderStatus status=OrderStatus.PENDING;
     @ManyToOne
     private User user;
     @ManyToOne
