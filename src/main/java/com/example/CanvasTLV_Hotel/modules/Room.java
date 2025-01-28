@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
+@Table(name = "Rooms")
 @Data
 @NoArgsConstructor
 public class Room {
@@ -16,22 +17,23 @@ public class Room {
     private long id;
     @Column(unique = true)
     private String roomNumber;
-    private RoomType type;
+    private RoomType roomType;
     private double pricePerNight;
     private boolean isAvailable=true;
     private String description;
     private int capacity;
     private List<String> features;
-    @OneToMany
-    private Reservation reservation;
+    @OneToMany(mappedBy = "room",fetch = FetchType.EAGER)
+    private List<Reservation> reservation;
 
-    public Room(String roomNumber, RoomType type, double pricePerNight, boolean isAvailable, String description, int capacity, List<String> features) {
+    public Room(String roomNumber, RoomType roomType, double pricePerNight, boolean isAvailable, String description, int capacity, List<String> features) {
         this.roomNumber = roomNumber;
-        this.type = type;
+        this.roomType = roomType;
         this.pricePerNight = pricePerNight;
         this.isAvailable = isAvailable;
         this.description = description;
         this.capacity = capacity;
         this.features = features;
     }
+
 }

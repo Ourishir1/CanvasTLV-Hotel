@@ -1,5 +1,6 @@
 package com.example.CanvasTLV_Hotel.services;
 
+
 import com.example.CanvasTLV_Hotel.modules.Reservation;
 import com.example.CanvasTLV_Hotel.modules.Room;
 import com.example.CanvasTLV_Hotel.modules.User;
@@ -29,7 +30,7 @@ public class ReservationService {
     public Room assignAvailableRoom(RoomType roomType, LocalDate requestedStartDate, LocalDate requestedEndDate) throws NoAvailableRoomsException {
 
         // Fetch all rooms of the requested type
-        List<Room> rooms = roomRepo.findRoomByRoomType(roomType);
+        List<Room> rooms = roomRepo.findRoomsByRoomType(roomType);
         // Iterate through the rooms to find an available one
         for (Room room : rooms) {
             // Check if the room is available

@@ -10,4 +10,5 @@ public class CanvasTlvHotelApplication {
 		SpringApplication.run(CanvasTlvHotelApplication.class, args);
 	}
 
+
 }
